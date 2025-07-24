@@ -1,6 +1,6 @@
 # Actix SSE
 
-[<img alt="github" src="https://img.shields.io/badge/github-caido/actix-sse-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/caido/actix-sse)
+[<img alt="github" src="https://img.shields.io/badge/github-caido/actix_sse-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/caido/actix-sse)
 [<img alt="crates.io" src="https://img.shields.io/crates/v/actix-sse?color=fc8d62&logo=rust&style=for-the-badge" height="20">](https://crates.io/crates/actix-sse)
 
 SSE implementation for Actix, extracted from [actix-web-lab](https://github.com/robjtede/actix-web-lab/) with minimal dependencies.
