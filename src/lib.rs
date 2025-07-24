@@ -18,7 +18,7 @@
 //!         .await;
 //!
 //!     let event_stream = ReceiverStream::new(rx);
-//!     actix_sse::Sse::from_stream(event_stream).with_retry_duration(Duration::from_secs(10))
+//!     actix_sse::Sse::from_infallible_stream(event_stream).with_retry_duration(Duration::from_secs(10))
 //! }
 //!
 //! #[get("/from-stream")]
@@ -34,7 +34,9 @@
 pub use self::data::Data;
 pub use self::event::Event;
 pub use self::sse::Sse;
+use self::stream::InfallibleStream;
 
 mod data;
 mod event;
 mod sse;
+mod stream;

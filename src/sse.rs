@@ -10,7 +10,7 @@ use futures_core::Stream;
 use pin_project_lite::pin_project;
 use tokio::time::{Interval, interval};
 
-use crate::Event;
+use crate::{Event, InfallibleStream};
 
 type BoxError = Box<dyn std::error::Error>;
 
@@ -41,6 +41,16 @@ where
             keep_alive: None,
             retry_interval: None,
         }
+    }
+}
+
+impl<S> Sse<InfallibleStream<S>>
+where
+    S: Stream<Item = Event> + 'static,
+{
+    /// Create an SSE response from an infallible stream that yields SSE [Event]s.
+    pub fn from_infallible_stream(stream: S) -> Self {
+        Sse::from_stream(InfallibleStream::new(stream))
     }
 }
 
@@ -124,7 +134,6 @@ where
 #[cfg(test)]
 mod tests {
     use std::convert::Infallible;
-    use std::task::ready;
 
     use actix_web::body;
     use actix_web::http::StatusCode;
@@ -137,32 +146,6 @@ mod tests {
 
     use super::*;
     use crate::Data;
-
-    pin_project_lite::pin_project! {
-        /// Converts stream with item `T` into `Result<T, Infallible>`.
-        pub struct InfallibleStream<S> {
-            #[pin]
-            stream: S,
-        }
-    }
-
-    impl<S> InfallibleStream<S> {
-        pub fn new(stream: S) -> Self {
-            Self { stream }
-        }
-    }
-
-    impl<S: Stream> Stream for InfallibleStream<S> {
-        type Item = Result<S::Item, Infallible>;
-
-        fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
-            Poll::Ready(ready!(self.project().stream.poll_next(cx)).map(Ok))
-        }
-
-        fn size_hint(&self) -> (usize, Option<usize>) {
-            self.stream.size_hint()
-        }
-    }
 
     #[test]
     fn retry_is_first_msg() {

@@ -25,4 +25,3 @@ This should mostly be a drop-in replacement for the `sse` module, but we did rem
 - `Data::from_json`: Serialize in the caller and use `Data::new`
 - `Data::set_id`: Use `Data::id`
 - `Sse::from_receiver`: Use `Sse::from_stream(tokio_stream::wrappers::ReceiverStream::new(rx))`
-- `SSe::from_infallible_stream`: Wrap your `Event` with `Ok` and use `Sse::from_stream`
